@@ -90,8 +90,8 @@ def sales():
 
 
     # Plotly Express plot of query
-    genresalesdf = pd.DataFrame(genresales, columns=["Genre", "NA_Sales", "EU_Sales", "JP_Sales", "Other_Sales", "Global_Sales"])
-    fig2 = px.bar(genresalesdf, x="Genre", y=["NA_Sales", "EU_Sales", "JP_Sales", "Other_Sales"], title="Sales by Genre")
+    genresalesdf = pd.DataFrame(genresales, columns=["Genre", "North America", "Europe", "Japan", "Other", "Global_Sales"])
+    fig2 = px.bar(genresalesdf, x="Genre", y=["North America", "Europe", "Japan", "Other",], labels={"value": "Sales (Millions of Units)","variable":"Region"})
     fig2.update_layout(legend_title="")
     fig2.update_layout(legend=dict(
                         orientation="h",
