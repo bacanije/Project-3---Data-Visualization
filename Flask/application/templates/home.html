@@ -1,35 +1,31 @@
 {% extends "layout.html" %}
 {% block content %}
-<html>
 
-    <div class="jumbotron"> 
-        <div class="container">
-            <h1 class="display-3" >
-                <strong>
-                Welcome to the home page
-                </strong>
-            </h1>
+<div class="d-flex p-2" style="margin-top: 50px" style="margin-bottom: 50px;"> 
+    <div class="container">
+        <h1>
+            Video Game Sales
+        </h1>
+    </div>
+</div>
+
+<div class="row p-4">
+    <div class="card m-auto" style="width:90%;">
+        <div class="card-body">
+            <div id="chart" class="chart"></div>
+            <p>
+                dlksfdlfkjdlkfjlsdjflsdkjflsdkjflksjldfkj
+            </p>
         </div>
     </div>
+</div>  
 
 
-    <div class="row p-4">
-        <div class="card m-auto" style="width:90%;">
-            <div class="card-body">
-                <div id="chart" class="chart"></div>
-                <p>
-                    dlksfdlfkjdlkfjlsdjflsdkjflsdkjflksjldfkj
-                </p>
-            </div>
-        </div>
-    </div>  
+<!-- plotly CDN -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script type="text/javascript">
+    var graphs = {{graphJSON|safe}};
+    Plotly.plot('chart',graphs,{});
+</script>
 
-
-    <!-- plotly CDN -->
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script type="text/javascript">
-        var graphs = {{graphJSON|safe}};
-        Plotly.plot('chart',graphs,{});
-    </script>
-</html>
 {% endblock %}

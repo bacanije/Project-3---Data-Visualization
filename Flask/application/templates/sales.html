@@ -1,32 +1,40 @@
 {% extends "layout.html" %}
 {% block content %}
-<html>
 
-    <div class="jumbotron"> 
-        <div class="container">
-            <h1 class="display-3" >
-                <strong>
-                Video Game Sales
-                </strong>
-            </h1>
+
+<div class="d-flex p-2" style="margin-top: 50px" style="margin-bottom: 50px;"> 
+    <div class="container">
+        <h1>
+            Video Game Sales
+        </h1>
+    </div>
+</div>
+<div class="row p-4">
+    <div class="card m-auto" style="width:90%" stylye="margin-top: 100px">
+        <div class="card-body">
+            <h4 class="card-title">Top 50 Games by Units Sold</h4>
+            <div id="chart1" class="chart"></div>
+            <p>
+            </p>
         </div>
     </div>
-    <div class="row p-4">
-        <div class="card m-auto" style="width:90%;">
-            <div class="card-body">
-                <h4 class="card-title">Top 50 Games Copies Sold</h4>
-                <div id="chart1" class="chart"></div>
-                <p>
-                </p>
-            </div>
+</div>  
+<div class="row p-4">
+    <div class="card m-auto" style="width:90%;">
+        <div class="card-body">
+            <h4 class="card-title">Units Sold by Genre</h4>
+            <div id="chart2" class="chart"></div>
+            <p>
+            </p>
         </div>
-    </div>  
-
-        <!-- plotly CDN -->
-        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-        <script type="text/javascript">
-            var graph1 = {{sales1graphJSON|safe}};
-            Plotly.plot('chart1', graph1,{});
-        </script>
-    </html>
-    {% endblock %}
+    </div>
+</div>
+    <!-- plotly CDN -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script type="text/javascript">
+        var graph1 = {{sales1graphJSON|safe}};
+        Plotly.plot('chart1', graph1,{});
+        var graph2 = {{sales2graphJSON|safe}};
+        Plotly.plot('chart2', graph2,{});
+    </script>
+{% endblock %}

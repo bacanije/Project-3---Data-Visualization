@@ -1,0 +1,21 @@
+h1{
+    /* font-family:"Press Start 2P" */
+    font-family: "Kode Mono", monospace;
+    font-size: 100px;
+    color: black;
+    font-weight: 300;
+}
+
+nav{
+    font-family: "Kode Mono", monospace;
+}
+
+body {
+    margin:0;
+    background: rgba(0,0,0,0.1);
+}
+
+.jumbotron{
+    background-color: black
+    
+}

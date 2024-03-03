@@ -64,14 +64,12 @@ def sales():
     gamesales = session.query(*sel).\
         group_by(Sales.Name).\
         order_by(func.sum(Sales.Global_Sales).desc()).limit(50).all()
-
-    session.close()
-
-    top50salesdf = pd.DataFrame(gamesales, columns=["Name", "North America Sales", "Europe Sales", "Japan Sales", "Other Sales", "Global_Sales"])
-    fig = px.bar(top50salesdf, x="Name", y=["North America Sales", "Europe Sales", "Japan Sales", "Other Sales"], height=1000, width=950,
-                labels={"value": "Million of Copies", "Name":"Game"})
-    fig.update_layout(legend_title="")
-    fig.update_layout(legend=dict(
+    
+    top50salesdf = pd.DataFrame(gamesales, columns=["Name", "North America", "Europe", "Japan", "Other", "Global_Sales"])
+    fig1 = px.bar(top50salesdf, x="Name", y=["North America", "Europe", "Japan", "Other"], height=1000, width=950,
+                labels={"value": "Sales (Millions of Units)", "Name":"Game", "variable":"Region"})
+    fig1.update_layout(legend_title="")
+    fig1.update_layout(legend=dict(
                         orientation="h",
                         yanchor="bottom",
                         y=1.02,
@@ -79,10 +77,40 @@ def sales():
                         x=1
                     ))
     
+    sales1graphJSON = json.dumps(fig1, cls=plotly.utils.PlotlyJSONEncoder)
+    
+    sel = [Sales.Genre,
+      func.sum(Sales.NA_Sales),
+      func.sum(Sales.EU_Sales),
+      func.sum(Sales.JP_Sales),
+      func.sum(Sales.Other_Sales),
+      func.sum(Sales.Global_Sales)]
+
+    genresales = session.query(*sel).\
+        group_by(Sales.Genre).\
+        order_by(func.sum(Sales.Global_Sales).desc()).all()
+
+
+
+    genresalesdf = pd.DataFrame(genresales, columns=["Genre", "NA_Sales", "EU_Sales", "JP_Sales", "Other_Sales", "Global_Sales"])
+    fig2 = px.bar(genresalesdf, x="Genre", y=["NA_Sales", "EU_Sales", "JP_Sales", "Other_Sales"], title="Sales by Genre")
+    fig2.update_layout(legend_title="")
+    fig2.update_layout(legend=dict(
+                        orientation="h",
+                        yanchor="bottom",
+                        y=1.02,
+                        xanchor="right",
+                        x=1
+                    ))
+
+    session.close()
+
+
+    
     
 
-    sales1graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    sales2graphJSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
     
-    return render_template("sales.html", sales1graphJSON = sales1graphJSON, title="sales")
+    return render_template("sales.html", sales1graphJSON = sales1graphJSON, sales2graphJSON=sales2graphJSON, title="sales")
 
     
