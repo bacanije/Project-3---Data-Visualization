@@ -1,34 +1,37 @@
 {% extends "layout.html" %}
 {% block content %}
 
+<!-- Title at top of page -->
+    <div class="d-flex justify-content-center" style="margin-top: 50px" style="margin-bottom: 50px;"> 
+            <h1 class="text-center">
+                Sales
+            </h1>
+    </div>
 
-<div class="d-flex p-2" style="margin-top: 50px" style="margin-bottom: 50px;"> 
-    <div class="container">
-        <h1>
-            Video Game Sales
-        </h1>
-    </div>
-</div>
-<div class="row p-4">
-    <div class="card m-auto" style="width:90%" stylye="margin-top: 100px">
-        <div class="card-body">
-            <h4 class="card-title">Top 50 Games by Units Sold</h4>
-            <div id="chart1" class="chart"></div>
-            <p>
-            </p>
+    <!-- Card for first graph -->
+    <div class="row p-4">
+        <div class="card m-auto" style="width:90%" style="margin-top: 100px">
+            <div class="card-body">
+                <h4 class="card-title">Top 50 Games by Units Sold</h4>
+                <div id="chart1" class="chart"></div>
+                <p>
+                </p>
+            </div>
+        </div>
+    </div>  
+
+    <!-- Card for second graph -->
+    <div class="row p-4">
+        <div class="card m-auto" style="width:90%;">
+            <div class="card-body">
+                <h4 class="card-title">Units Sold by Genre</h4>
+                <div id="chart2" class="chart"></div>
+                <p>
+                </p>
+            </div>
         </div>
     </div>
-</div>  
-<div class="row p-4">
-    <div class="card m-auto" style="width:90%;">
-        <div class="card-body">
-            <h4 class="card-title">Units Sold by Genre</h4>
-            <div id="chart2" class="chart"></div>
-            <p>
-            </p>
-        </div>
-    </div>
-</div>
+
     <!-- plotly CDN -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script type="text/javascript">
