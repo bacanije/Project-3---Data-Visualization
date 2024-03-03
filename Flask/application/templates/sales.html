@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+<html>
+
+    <div class="jumbotron"> 
+        <div class="container">
+            <h1 class="display-3" >
+                <strong>
+                Video Game Sales
+                </strong>
+            </h1>
+        </div>
+    </div>
+    <div class="row p-4">
+        <div class="card m-auto" style="width:90%;">
+            <div class="card-body">
+                <h4 class="card-title">Top 50 Games Copies Sold</h4>
+                <div id="chart1" class="chart"></div>
+                <p>
+                </p>
+            </div>
+        </div>
+    </div>  
+
+        <!-- plotly CDN -->
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script type="text/javascript">
+            var graph1 = {{sales1graphJSON|safe}};
+            Plotly.plot('chart1', graph1,{});
+        </script>
+    </html>
+    {% endblock %}
