@@ -7,7 +7,8 @@ import plotly.express as px
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, inspect, func
+from sqlalchemy import create_engine, text, inspect, func, and_, extract, desc
+import plotly.graph_objects as go
 
 # Create database connection, declare a Base and reflect tables
 engine = create_engine("sqlite:///../Resources/gamesdb.db")
@@ -29,7 +30,44 @@ def overview():
 
 @app.route("/trends")
 def trends():
-    return render_template("trends.html", title="Trends")
+
+    session = Session(engine)
+    sel = [Games.Genres,
+     func.count(Games.Release_Date),
+    func.count(Games.Publisher.distinct()),
+    func.count(Games.Product_Rating)].one()
+    
+    
+    genre_counts_query = session.query(Games.Genres, func.count(Games.Genres)).\
+        filter(Games.Release_Date >= '1995-01-01', Games.Release_Date <= '2024-12-31').\
+        group_by(Games.Genres).order_by(func.count(Games.Genres).desc())
+    genre_counts = genre_counts_query.all()
+    genre_counts_query_df = pd.DataFrame(genre_counts_query, columns=["Genre", "Counts"])
+    bar_trace = go.Bar(y=genre_counts_query_df['Genre'], x=genre_counts_query_df['Counts'], orientation='h')
+    layout = go.Layout(title='Genre Counts from 1995 to 2024', xaxis=dict(title='Counts'), yaxis=dict(title='Genre'))
+    fig = go.Figure(data=[bar_trace], layout=layout)
+
+    monthly_publisher_count = session.query(func.extract('month', Games.Release_Date).label('Month'),
+    func.count(Games.Publisher.distinct()).label('Publisher_Count')).filter(
+    Games.Release_Date.between('1995-01-01', '2024-12-31')).group_by(
+        func.extract('month', Games.Release_Date)).order_by('Month').all()
+    monthly_publisher_count_df = pd.DataFrame(monthly_publisher_count, columns=["Month", "Number of Publishers"])
+    line_trace = go.Scatter(x=monthly_publisher_count_df['Month'], y=monthly_publisher_count_df['Number of Publishers'], mode='lines+markers')
+    fig = go.Figure(data=[line_trace], layout=go.Layout(title='Monthly Number of Publishers (1995-2024)', xaxis=dict(title='Month'), yaxis=dict(title='Number of Publishers')))
+    fig.show()
+
+    query = session.query(extract('year', Games.Release_Date).label('Year'),
+    Games.Product_Rating,
+        func.count().label('Rating_Count')).filter(
+        Games.Release_Date.between('1995-01-01', '2024-12-31')).group_by(extract('year', Games.Release_Date),
+        Games.Product_Rating).order_by('Year')
+    results = query.all()
+    product_rating_counts_df = pd.DataFrame(results, columns=['Year', 'Product_Rating', 'Rating_Count'])
+    fig = px.line(product_rating_counts_df, x='Year', y='Rating_Count', color='Product_Rating',
+        title='Product Rating Counts by Year', labels={'Year': 'Year', 'Rating_Count': 'Rating Count'})
+
+
+    return render_template("trends.html", title="trends")
 
 @app.route("/ratings")
 def ratings():
