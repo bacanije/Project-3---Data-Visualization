@@ -2,48 +2,60 @@
 {% block content %}
 
 <!-- Title at top of page -->
-<div class="d-flex justify-content-center" style="margin-top: 50px" style="margin-bottom: 50px;"> 
+<div class="d-flex justify-content-center" style="margin-top: 50px; margin-bottom: 50px;"> 
     <h1>
         Trends
     </h1>
 </div>
 
+<!-- First Chart: Genre Counts from Overtime -->
 <div class="row p-4">
     <div class="card m-auto" style="width:90%;">
         <div class="card-body">
             <h4 class="card-title">Genre Counts from Overtime</h4>
             <div id="chart1" class="chart"></div>
-            <p>
-            </p>
+            <p></p>
         </div>
     </div>
-  </div>
+</div>
 
-  <div class="row p-4">
+<!-- Second Chart: Number of Publishers Per Month (1995-2024) -->
+<div class="row p-4">
     <div class="card m-auto" style="width:90%;">
         <div class="card-body">
             <h4 class="card-title">Number of Publishers Per Month (1995-2024)</h4>
             <div id="chart2" class="chart"></div>
-            <p>
-            </p>
+            <p></p>
         </div>
     </div>
-  </div>
+</div>
 
-  <div class="row p-4">
+<!-- Third Chart: Product Rating Counts by Year -->
+<div class="row p-4">
     <div class="card m-auto" style="width:90%;">
         <div class="card-body">
             <h4 class="card-title">Product Rating Counts by Year</h4>
-            <div id="chart2" class="chart"></div>
-            <p>
-            </p>
+            <div id="chart3" class="chart"></div>
+            <p></p>
         </div>
     </div>
-  </div>
+</div>
 
-    <!-- plotly CDN -->
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script type="text/javascript">
-       
+<!-- Plotly CDN -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script type="text/javascript">
+    // Parse JSON data for Chart 1
+    var trendsgraph1Data = {{ trendsgraph1JSON | safe }};
+    Plotly.plot('chart1', trendsgraph1Data);
+
+    // Parse JSON data for Chart 2
+    var trendsgraph2Data = {{ trendsgraph2JSON | safe }};
+    Plotly.plot('chart2', trendsgraph2Data);
+
+    // Parse JSON data for Chart 3
+    var trendsgraph3Data = {{ trendsgraph3JSON | safe }};
+    Plotly.plot('chart3', trendsgraph3Data);
+</script>
+
 
 {% endblock %}

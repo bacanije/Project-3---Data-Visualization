@@ -4,6 +4,7 @@ import pandas as pd
 import json
 import plotly
 import plotly.express as px
+import plotly.io as pio
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
@@ -17,6 +18,13 @@ Base.prepare(autoload_with=engine)
 Base.classes.keys()
 # Save a reference to the games table as `Games`
 Games = Base.classes.games
+
+# Plotly JSON encoder
+class PlotlyJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, go.Figure):
+            return pio.to_json(obj)
+        return json.JSONEncoder.default(self, obj)
 
 # Defining Routes
 
@@ -35,26 +43,48 @@ def trends():
     sel = [Games.Genres,
      func.count(Games.Release_Date),
     func.count(Games.Publisher.distinct()),
-    func.count(Games.Product_Rating)].one()
-    
+    func.count(Games.Product_Rating)]
     
     genre_counts_query = session.query(Games.Genres, func.count(Games.Genres)).\
         filter(Games.Release_Date >= '1995-01-01', Games.Release_Date <= '2024-12-31').\
         group_by(Games.Genres).order_by(func.count(Games.Genres).desc())
     genre_counts = genre_counts_query.all()
+    
     genre_counts_query_df = pd.DataFrame(genre_counts_query, columns=["Genre", "Counts"])
-    bar_trace = go.Bar(y=genre_counts_query_df['Genre'], x=genre_counts_query_df['Counts'], orientation='h')
-    layout = go.Layout(title='Genre Counts from 1995 to 2024', xaxis=dict(title='Counts'), yaxis=dict(title='Genre'))
-    fig = go.Figure(data=[bar_trace], layout=layout)
+    genre_counts_json = genre_counts_query_df.to_json(orient='records')
 
+    bar_trace = go.Bar(
+    x=genre_counts_query_df['Counts'],  
+    y=genre_counts_query_df['Genre'],   
+    orientation='h',                   
+    hoverinfo='x+y',                   
+    marker=dict(color='skyblue'))
+
+# Define layout
+    layout = go.Layout(
+    title='Genre Counts from 1995 to 2024',
+    xaxis=dict(title='Counts'),
+    yaxis=dict(title='Genre'),
+    bargap=0.1)
+
+    trendfig1 = go.Figure(data=[bar_trace], layout=layout)
+
+# JSON Encoding figure for display  
+    trendsgraph1JSON = trendfig1.to_json()
+    
     monthly_publisher_count = session.query(func.extract('month', Games.Release_Date).label('Month'),
     func.count(Games.Publisher.distinct()).label('Publisher_Count')).filter(
     Games.Release_Date.between('1995-01-01', '2024-12-31')).group_by(
         func.extract('month', Games.Release_Date)).order_by('Month').all()
+    
     monthly_publisher_count_df = pd.DataFrame(monthly_publisher_count, columns=["Month", "Number of Publishers"])
+    monthly_publisher_count_json = monthly_publisher_count_df.to_json(orient='records')
+
     line_trace = go.Scatter(x=monthly_publisher_count_df['Month'], y=monthly_publisher_count_df['Number of Publishers'], mode='lines+markers')
-    fig = go.Figure(data=[line_trace], layout=go.Layout(title='Monthly Number of Publishers (1995-2024)', xaxis=dict(title='Month'), yaxis=dict(title='Number of Publishers')))
-    fig.show()
+    trendfig2 = go.Figure(data=[line_trace], layout=go.Layout(title='Monthly Number of Publishers (1995-2024)', xaxis=dict(title='Month'), yaxis=dict(title='Number of Publishers')))
+    
+     # JSON Encoding figure for display  
+    trendsgraph2JSON = json.dumps(trendfig2, cls=plotly.utils.PlotlyJSONEncoder)
 
     query = session.query(extract('year', Games.Release_Date).label('Year'),
     Games.Product_Rating,
@@ -63,11 +93,16 @@ def trends():
         Games.Product_Rating).order_by('Year')
     results = query.all()
     product_rating_counts_df = pd.DataFrame(results, columns=['Year', 'Product_Rating', 'Rating_Count'])
-    fig = px.line(product_rating_counts_df, x='Year', y='Rating_Count', color='Product_Rating',
-        title='Product Rating Counts by Year', labels={'Year': 'Year', 'Rating_Count': 'Rating Count'})
+    # Convert DataFrame to JSON
+    product_rating_counts_json = product_rating_counts_df.to_json(orient='records')
 
+    trendfig3 = px.line(product_rating_counts_df, x='Year', y='Rating_Count', color='Product_Rating',title='Product Rating Counts by Year', labels={'Year': 'Year', 'Rating_Count': 'Rating Count'})
+ 
+ # JSON Encoding figure for display  
+    trendsgraph3JSON = json.dumps(trendfig3, cls=plotly.utils.PlotlyJSONEncoder)
 
-    return render_template("trends.html", title="trends")
+    return render_template('trends.html', trendsgraph1JSON=trendsgraph1JSON, trendsgraph2JSON=trendsgraph2JSON, trendsgraph3JSON=trendsgraph3JSON)
+
 
 @app.route("/ratings")
 def ratings():
