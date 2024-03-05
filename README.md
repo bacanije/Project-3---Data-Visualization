@@ -14,7 +14,11 @@ The gamesdb Database was queried using SQLalchemy in jupyter notebook or VSCode 
 
 Part 1: Overview of Data (Mike)  
 
-Part 2: Trends (Jessamyn)  
+Part 2: Trends (Jessamyn: JupyterNotebooks/Videogame_analysis_final_jess.ipynb)
+- Average rating (user score and) by publisher over time
+- Count of Genre over time
+- Counts of releases from Jan to Dec by publisher 
+- Counts of product rating (ESRB) by year 
 
 Part 3: Ratings (Kajal)  
 
