@@ -13,6 +13,9 @@ The games.csv and vgsales.csv were converted into a [SQLite database](Resources/
 The gamesdb Database was queried using SQLalchemy in jupyter notebook or VSCode to create visualizations in a Flask app.  The [Flask app](Flask) files are all within this Repository's Flask Folder. The app can be run through the [run.py](Flask/run.py) file.  
 
 Part 1: Overview of Data (Mike)  
+- Counts by Publisher
+- Counts by Developers
+- Counts by Genre 
 
 Part 2: Trends (Jessamyn: JupyterNotebooks/Videogame_analysis_final_jess.ipynb)
 - Average rating (user score and) by publisher over time
@@ -21,6 +24,10 @@ Part 2: Trends (Jessamyn: JupyterNotebooks/Videogame_analysis_final_jess.ipynb)
 - Counts of product rating (ESRB) by year 
 
 Part 3: Ratings (Kajal)  
+- Top Rated Games via User & Top Rated Games via Metascore
+- Highest average rating for publisher/developer
+- Top 10 games released by user rating
+- Game of the Year by user rating
 
 Part 4: Comparisons (Allister)  
 
