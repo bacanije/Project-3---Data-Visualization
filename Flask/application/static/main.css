@@ -6,6 +6,14 @@ h1{
     font-weight: 300;
 }
 
+body {
+    background-image: url('static/pacmanbg.gif'); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    font-family: 'Press Start 2P', cursive; 
+}
+
 nav{
     font-family: "Kode Mono", monospace;
 }
@@ -28,4 +36,28 @@ body {
 .navbar-nav .nav-item.active .nav-link,
 .navbar-nav .nav-item:hover .nav-link {
     color:greenyellow;
+}
+
+h2{
+    font-family: "Kode Mono", monospace;
+    font-size: 50px;
+    color: #ffffff;
+    font-weight: 300;
+    text-align: center; 
+}
+
+p{
+    font-family: "Kode Mono", monospace;
+    font-size: 20;
+    color: #6d6c6c;
+    font-weight: 300;
+    text-align: center;
+}
+
+h4{
+    font-family: "Kode Mono", monospace;
+    font-size: 20px;
+    color: #ffffff;
+    font-weight: 300;
+    text-align: center;
 }
