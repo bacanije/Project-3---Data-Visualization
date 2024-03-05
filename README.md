@@ -20,7 +20,7 @@ Part 3: Ratings (Kajal)
 
 Part 4: Comparisons (Allister)  
 
-Part 5: Sales ([Stephanie](JupyterNotebooks/SL_VideoGamesSalesFigures.ipynb)  
+Part 5: Sales ([Stephanie](JupyterNotebooks/SL_VideoGamesSalesFigures.ipynb))
 - Top 50 Games by Units Sold (across platforms)
 - Units Sold by Genre
 - Unit Sales by Year by Genre
