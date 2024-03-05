@@ -10,7 +10,7 @@ The second dataset, [vgsales.csv](Resources/startercsv/vgsales.csv), was obtaine
 
 The games.csv and vgsales.csv were converted into a [SQLite database](Resources/gamesdb.db) using DB Browser and stored in this Repository's Resources folder.
 
-The gamesdb Database was queried using SQLalchemy in jupyter notebook or VSCode to create visualizations in a Flask app.  The [Flask app](Flask) files are all within this Repository's Flask Folder. The app can be run through the [run.py](Flask/application/run.py) file.
+The gamesdb Database was queried using SQLalchemy in jupyter notebook or VSCode to create visualizations in a Flask app.  The [Flask app](Flask) files are all within this Repository's Flask Folder. The app can be run through the [run.py](Flask/run.py) file.
 
 Part 1: Overview of Data (Mike)  
 
@@ -20,7 +20,7 @@ Part 3: Ratings (Kajal)
 
 Part 4: Comparisons (Allister)  
 
-Part 5: Sales ([Stephanie](JupyterNotebooks/SL_VideoGamesSalesFigures.ipynb))
+Part 5: Sales ( [Stephanie](JupyterNotebooks/SL_VideoGamesSalesFigures.ipynb) )
 - Top 50 Games by Units Sold (across platforms)
 - Units Sold by Genre
 - Unit Sales by Year by Genre
