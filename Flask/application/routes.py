@@ -14,6 +14,8 @@ engine = create_engine("sqlite:///../Resources/gamesdb.db")
 Base = automap_base()
 Base.prepare(autoload_with=engine)
 Base.classes.keys()
+# Save a reference to the games table as `Games`
+Games = Base.classes.games
 
 # Defining Routes
 
@@ -35,7 +37,23 @@ def ratings():
 
 @app.route("/comparisons")
 def comparisons():
-    return render_template("comparisons.html", title = "Comparisons")
+
+    session = Session(engine)
+    sel = [Games.Genres,
+      func.sum(Games.Publisher)]
+
+    genres_published = session.query(*sel).\
+        group_by(Games.Genres).\
+        order_by(func.sum(Games.Publisher).desc()).limit(10).all()
+    top10_genres_published_df = pd.DataFrame(genres_published, columns=["Genres","Published"])
+    figc1 = px.bar(top10_genres_published_df, x="Genres", y= "Published", color="Genres")
+            
+    figc1.update_layout(title="Top 10 Genres Published")
+    comparison1graphJSON = json.dumps(figc1, cls=plotly.utils.PlotlyJSONEncoder)
+
+    session.close()
+
+    return render_template("comparisons.html", title = "Comparisons", comparison1graphJSON=comparison1graphJSON)
 
 @app.route("/sales")
 def sales():
@@ -100,12 +118,15 @@ def sales():
                         xanchor="right",
                         x=1
                     ))
+
+
+
     session.close()
 
     # JSON Encoding figure for display  
     sales2graphJSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
     
     # Returning sales.html template with the two figures
-    return render_template("sales.html", sales1graphJSON = sales1graphJSON, sales2graphJSON=sales2graphJSON, title="sales")
+    return render_template("sales.html", sales1graphJSON = sales1graphJSON, sales2graphJSON=sales2graphJSON, title="Sales")
 
     
