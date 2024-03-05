@@ -36,8 +36,24 @@
     <div class="row p-4">
         <div class="card m-auto" style="width:90%;">
             <div class="card-body">
-                <h4 class="card-title">Graph3</h4>
-                <div id="chart3" class="chart"></div>
+                <h4 class="card-title">Millions of Units Sold by Year and Genre</h4>
+                <div id="chart3" class="chart">
+                <img src="{{url_for('static', filename='saleschart3.png')}}" align="middle" />
+                </div>
+                <p>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Card for forth graph -->
+    <div class="row p-4">
+        <div class="card m-auto" style="width:90%;">
+            <div class="card-body">
+                <h4 class="card-title">Millions of Units Sold by Year and Genre - Normalized</h4>
+                <div id="chart4" class="chart">
+                <img src="{{url_for('static', filename='saleschart4.png')}}" align="middle" />
+                </div>
                 <p>
                 </p>
             </div>
