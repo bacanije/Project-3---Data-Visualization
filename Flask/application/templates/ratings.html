@@ -11,8 +11,9 @@
 <div class="row p-4">
     <div class="card m-auto" style="width:90%;">
         <div class="card-body">
-            <h4 class="card-title">Chart Title</h4>
+            <h4 class="card-title">Top User-Rated Games vs Critic Metascore</h4>
             <div id="chart1" class="chart"></div>
+            <img src="{{url_for('static', filename='01_Top Rated Games ComparisonK.png')}}" align="middle" />
             <p>
             </p>
         </div>
@@ -22,8 +23,42 @@
   <div class="row p-4">
     <div class="card m-auto" style="width:90%;">
         <div class="card-body">
-            <h4 class="card-title">Chart Title</h4>
+            <h4 class="card-title">Top User-Rated Games by Year</h4>
             <div id="chart2" class="chart"></div>
+            <img src="{{url_for('static', filename='03_Top 10 Games Released by User Rating Over TimeK.png')}}" align="middle" />
+            <p>
+            </p>
+        </div>
+    </div>
+  </div>
+  <div class="row p-4">
+    <div class="card m-auto" style="width:90%;">
+        <div class="card-body">
+            <h4 class="card-title">Average User Rating by Year</h4>
+            <div id="chart3" class="chart"></div>
+            <img src="{{url_for('static', filename='04_Games Over the YearsK.png')}}" align="middle" />
+            <p>
+            </p>
+        </div>
+    </div>
+  </div>
+  <div class="row p-4">
+    <div class="card m-auto" style="width:90%;">
+        <div class="card-body">
+            <h4 class="card-title">Top 100 Publishers by Average User Rating of Games</h4>
+            <div id="chart4" class="chart"></div>
+
+            <p>
+            </p>
+        </div>
+    </div>
+  </div>
+  <div class="row p-4">
+    <div class="card m-auto" style="width:90%;">
+        <div class="card-body">
+            <h4 class="card-title">Top 100 Developers by Average User Rating of Games</h4>
+            <div id="chart5" class="chart"></div>
+
             <p>
             </p>
         </div>
@@ -32,4 +67,10 @@
 
     <!-- plotly CDN -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script type="text/javascript">
+        var rgraph4 = {{ratings4graphJSON|safe}};
+        Plotly.plot('chart4', rgraph4,{});
+        var rgraph5 = {{ratings5graphJSON|safe}};
+        Plotly.plot('chart5', rgraph5,{});
+    </script>
 {% endblock %}
