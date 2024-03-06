@@ -165,6 +165,37 @@ def sales():
     # JSON Encoding figure for display  
     sales1graphJSON = json.dumps(fig1, cls=plotly.utils.PlotlyJSONEncoder)
     
+    # Figure 1b
+    # Defining values to select
+    sel = [func.sum(Sales.NA_Sales),
+      func.sum(Sales.EU_Sales),
+      func.sum(Sales.JP_Sales),
+      func.sum(Sales.Other_Sales)]
+    
+    # Query the class and create dataframe
+    totalgamesales = session.query(*sel).all()
+    totalgamesalesdf = pd.DataFrame(totalgamesales, columns=["North America", "Europe", "Japan", "Other"])
+    totalgamesalesdf['Sales'] = [""]
+
+    # Plotly express stacked normalized bar chart of totalsales by region
+    fig1b = px.histogram(totalgamesalesdf, x=["North America", "Europe", "Japan", "Other"], y='Sales',
+                        barnorm='percent', text_auto='.1f', orientation='h', title="",
+                       labels={"variable":"Region", "value": "Sales (Millions of Units)"}, height=300, width=950, hover_data={'Sales':False})
+    fig1b.update_xaxes(title_text='Sum of Sales Normalized', showticklabels=True, range=[0, 100], showgrid=False)
+    fig1b.update_layout(plot_bgcolor="white", title_y=0, hovermode='x')
+    fig1b.update_layout(legend=dict(
+                        orientation="h",
+                        yanchor="bottom",
+                        y=1.02,
+                        xanchor="right",
+                        x=1
+                    ))
+    
+    # JSON Encoding figure for display  
+    sales1bgraphJSON = json.dumps(fig1b, cls=plotly.utils.PlotlyJSONEncoder)
+
+
+
     # Figure 2
     # Defining values to select
     sel = [Sales.Genre,
@@ -200,6 +231,6 @@ def sales():
     sales2graphJSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
     
     # Returning sales.html template with the two figures
-    return render_template("sales.html", sales1graphJSON = sales1graphJSON, sales2graphJSON=sales2graphJSON, title="Sales")
+    return render_template("sales.html", sales1graphJSON = sales1graphJSON, sales1bgraphJSON=sales1bgraphJSON, sales2graphJSON=sales2graphJSON, title="Sales")
 
     
