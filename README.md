@@ -29,7 +29,10 @@ Part 3: Ratings (Kajal)
 - Top 10 games released by user rating
 - Game of the Year by user rating
 
-Part 4: Comparisons (Allister)  
+Part 4: Comparisons (Allister)
+- Top 10 Genres Published
+- Top Titles by User score vs Mean Meta Score
+- Top Platforms by User score vs Mean Meta Score
 
 Part 5: Sales ( [Stephanie](JupyterNotebooks/SL_VideoGameSalesFigures.ipynb) )
 - Top 50 Games by Units Sold (across platforms)
