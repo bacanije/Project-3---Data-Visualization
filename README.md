@@ -2,7 +2,7 @@
 ## DataBootCamp Project 3 - Group 2
 
 ### Aim:
-This projects aims to gain a better understanding of the video game industry.  
+The aim of this project is to better understand the video game industry through analysis of developers, publishers, user scores, critic scores, genres, and sales.
 
 This project utilized two datasets, located in this repository's [Resources/startercsv](Resources/startercsv) folder.
 The first dataset, [all_video_games(cleaned).csv](Resources/startercsv/all_video_games(cleaned).csv), was obtained from [Kaggle.com](https://www.kaggle.com/datasets/beridzeg45/video-games).  The all_video_games(cleaned).csv was further cleaned in jupyter notebook using file [Video_games_cleaning.ipynb](JupyterNotebooks/Video_games_cleaning.ipynb) and exported to csv as [games.csv](Resources/games.csv).
@@ -34,12 +34,13 @@ Part 4: Comparisons (Allister)
 - Top Titles by User score vs Mean Meta Score
 - Top Platforms by User score vs Mean Meta Score
 
-Part 5: Sales ( [Stephanie](JupyterNotebooks/SL_VideoGameSalesFigures.ipynb) )
+Part 5: Sales ([Stephanie](JupyterNotebooks/SL_VideoGameSalesFigures.ipynb))
 - Top 50 Games by Units Sold (across platforms)
+- Units Sold by Geographic Region
 - Units Sold by Genre
-- Unit Sales by Year by Genre
+- Unit Sales by Release Year and Genre
 
-The Flask app framework was created with the help of a YouTube tutorial:
+The Flask app framework was created with the help of a YouTube tutorial:  
 Code with Prince (2021) Web Data Dashboard with Plotly express and Flask Python and Javascript. Available at: https://www.youtube.com/watch?v=B97qWOUvlnU (Accessed: 04 March 2023).
 
 
