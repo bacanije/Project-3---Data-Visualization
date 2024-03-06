@@ -10,7 +10,7 @@ The second dataset, [vgsales.csv](Resources/startercsv/vgsales.csv), was obtaine
 
 The games.csv and vgsales.csv were converted into a SQLite database, ["gamesdb.db"](Resources/gamesdb.db), using DB Browser and stored in this repository's Resources folder.
 
-The gamesdb database was queried using SQLalchemy in jupyter notebook or VSCode to create visualizations with [Plotly](https://plotly.com/graphing-libraries/) or [Altair](https://altair-viz.github.io/index.html) libraries.  All figures are displaying in a Flask application.  The [Flask app](Flask) files are all within this Repository's Flask Folder. The app can be run through the [run.py](Flask/run.py) file.  
+The gamesdb database was queried using SQLalchemy in jupyter notebook or VSCode to create visualizations with [Plotly](https://plotly.com/graphing-libraries/) and [Altair](https://altair-viz.github.io/index.html) libraries.  All figures are displaying in a Flask application.  The [Flask app](Flask) files are all within this Repository's Flask Folder. The app can be run through the [run.py](Flask/run.py) file.  
 
 Part 1: Overview of Data (Mike)  
 - Counts by Publisher
