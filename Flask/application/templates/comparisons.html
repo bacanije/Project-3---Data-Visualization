@@ -12,7 +12,7 @@
     <div class="row p-4">
         <div class="card m-auto" style="width:90%" style="margin-top: 100px">
             <div class="card-body">
-                <h4 class="card-title">Top 10 Genres Published</h4>
+                <h4 class="card-title">Top Genres Published</h4>
                 <div id="chart1" class="chart"></div>
                 <p>
                 </p>
@@ -20,8 +20,77 @@
         </div>
     </div>  
 
+    <!-- Card for second graph -->
+    <div class="row p-4">
+        <div class="card m-auto" style="width:90%" style="margin-top: 100px">
+            <div class="card-body">
+                <h4 class="card-title">Game Titles by User Score</h4>
+                <div id="chart2" class="chart"></div>
+                <p>
+                </p>
+            </div>
+        </div>
+    </div>  
 
+    <!-- Card for third graph -->
+    <div class="row p-4">
+        <div class="card m-auto" style="width:90%" style="margin-top: 100px">
+            <div class="card-body">
+                <h4 class="card-title">Game Titles by Mean Meta Score</h4>
+                <div id="chart3" class="chart"></div>
+                <p>
+                </p>
+            </div>
+        </div>
+    </div> 
 
+    <!-- Card for fourth graph -->
+    <div class="row p-4">
+        <div class="card m-auto" style="width:90%" style="margin-top: 100px">
+            <div class="card-body">
+                <h4 class="card-title">Game Titles Score Comparision by User vs Mean Meta Score</h4>
+                <div id="chart4" class="chart"></div>
+                <p>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card for fifth graph -->
+    <div class="row p-4">
+        <div class="card m-auto" style="width:90%" style="margin-top: 100px">
+            <div class="card-body">
+                <h4 class="card-title">Game Platform User Score</h4>
+                <div id="chart5" class="chart"></div>
+                <p>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card for sixth graph -->
+    <div class="row p-4">
+        <div class="card m-auto" style="width:90%" style="margin-top: 100px">
+            <div class="card-body">
+                <h4 class="card-title">Game Platform Mean Meta Score</h4>
+                <div id="chart6" class="chart"></div>
+                <p>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card for seventhth graph -->
+    <div class="row p-4">
+        <div class="card m-auto" style="width:90%" style="margin-top: 100px">
+            <div class="card-body">
+                <h4 class="card-title">Game Platform Score Comparision by User vs Mean Meta Score</h4>
+                <div id="chart7" class="chart"></div>
+                <p>
+                </p>
+            </div>
+        </div>
+    </div>
 
 
     <!-- plotly CDN -->
@@ -29,6 +98,19 @@
     <script type="text/javascript">
         var graph1 = {{comparison1graphJSON|safe}};
         Plotly.plot('chart1', graph1,{});
+        var graph2 = {{comparison2graphJSON|safe}};
+        Plotly.plot('chart2', graph2,{});
+        var graph3 = {{comparison3graphJSON|safe}};
+        Plotly.plot('chart3', graph3,{});
+        var graph4 = {{comparison4graphJSON|safe}};
+        Plotly.plot('chart4', graph4,{});
+        var graph5 = {{comparison5graphJSON|safe}};
+        Plotly.plot('chart5', graph5,{});
+        var graph6 = {{comparison6graphJSON|safe}};
+        Plotly.plot('chart6', graph6,{});
+        var graph7 = {{comparison7graphJSON|safe}};
+        Plotly.plot('chart7', graph7,{});
+
 
     </script>
 {% endblock %}
