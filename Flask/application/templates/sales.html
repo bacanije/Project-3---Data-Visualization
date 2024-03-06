@@ -19,6 +19,18 @@
             </div>
         </div>
     </div>  
+    
+    <!-- Card for graph 1b -->
+    <div class="row p-4">
+        <div class="card m-auto" style="width:90%;">
+            <div class="card-body">
+                <h4 class="card-title">Units by Market Normalized</h4>
+                <div id="chart1b" class="chart"></div>
+                <p>
+                </p>
+            </div>
+        </div>
+    </div>
 
     <!-- Card for second graph -->
     <div class="row p-4">
@@ -36,7 +48,7 @@
     <div class="row p-4">
         <div class="card m-auto" style="width:90%;">
             <div class="card-body">
-                <h4 class="card-title">Millions of Units Sold by Year and Genre</h4>
+                <h4 class="card-title">Millions of Units Sold by Release Year and Genre</h4>
                 <div id="chart3" class="chart">
                 <img src="{{url_for('static', filename='saleschart3.png')}}" align="middle" />
                 </div>
@@ -67,6 +79,8 @@
     <script type="text/javascript">
         var graph1 = {{sales1graphJSON|safe}};
         Plotly.plot('chart1', graph1,{});
+        var graph1b = {{sales1bgraphJSON|safe}};
+        Plotly.plot('chart1b', graph1b,{});
         var graph2 = {{sales2graphJSON|safe}};
         Plotly.plot('chart2', graph2,{});
     </script>
