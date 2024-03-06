@@ -23,9 +23,9 @@ Part 2: Trends ([Jessamyn](JupyterNotebooks/Videogame_analysis_final_jess.ipynb)
 - Counts of releases from Jan to Dec by publisher 
 - Counts of product rating (ESRB) by year 
 
-Part 3: Ratings (Kajal)  
+Part 3: Ratings ([Kajal](JupyterNotebooks/Videogame_comparisions_Analysis_KM.ipynb))
 - Top Rated Games via User & Top Rated Games via Metascore
-- Highest average rating for publisher/developer
+- Highest average user rating for publisher/developer
 - Top 10 games released by user rating
 - Game of the Year by user rating
 
