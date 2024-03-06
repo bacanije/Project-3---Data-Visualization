@@ -10,14 +10,14 @@ The second dataset, [vgsales.csv](Resources/startercsv/vgsales.csv), was obtaine
 
 The games.csv and vgsales.csv were converted into a [SQLite database](Resources/gamesdb.db) using DB Browser and stored in this Repository's Resources folder.
 
-The gamesdb Database was queried using SQLalchemy in jupyter notebook or VSCode to create visualizations in a Flask app.  The [Flask app](Flask) files are all within this Repository's Flask Folder. The app can be run through the [run.py](Flask/run.py) file.  
+The gamesdb Database was queried using SQLalchemy in jupyter notebook or VSCode to create visualizations with [Plotly](https://plotly.com/graphing-libraries/) or [Altair](https://altair-viz.github.io/index.html) libraries.  All figures are displaying in a Flask application.  The [Flask app](Flask) files are all within this Repository's Flask Folder. The app can be run through the [run.py](Flask/run.py) file.  
 
 Part 1: Overview of Data (Mike)  
 - Counts by Publisher
 - Counts by Developers
 - Counts by Genre 
 
-Part 2: Trends (Jessamyn: JupyterNotebooks/Videogame_analysis_final_jess.ipynb)
+Part 2: Trends ([Jessamyn](JupyterNotebooks/Videogame_analysis_final_jess.ipynb))
 - Average rating (user score and) by publisher over time
 - Count of Genre over time
 - Counts of releases from Jan to Dec by publisher 
@@ -39,7 +39,7 @@ Part 5: Sales ( [Stephanie](JupyterNotebooks/SL_VideoGameSalesFigures.ipynb) )
 - Units Sold by Genre
 - Unit Sales by Year by Genre
 
-The Flask app framework followed a YouTube tutorial:
+The Flask app framework was created with the help of a YouTube tutorial:
 Code with Prince (2021) Web Data Dashboard with Plotly express and Flask Python and Javascript. Available at: https://www.youtube.com/watch?v=B97qWOUvlnU (Accessed: 04 March 2023).
 
 
