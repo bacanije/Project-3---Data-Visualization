@@ -106,7 +106,31 @@ def trends():
 
 @app.route("/ratings")
 def ratings():
-    return render_template("ratings.html", title = "Ratings")
+    session = Session(engine)
+    # Chart 1
+    results = session.query(Games.Publisher, func.avg(Games.User_Score))\
+                     .group_by(Games.Publisher)\
+                     .order_by(func.avg(Games.User_Score).desc())\
+                     .limit(100)\
+                     .all()
+    resultsdf = pd.DataFrame(results, columns=["Publisher", 'Average User Rating'])
+
+    fig = px.bar(resultsdf, x="Publisher", y="Average User Rating",color = "Publisher" )
+    fig.update_yaxes( range=[0,10])
+    ratings4graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    #Chart 2
+    results = session.query(Games.Developer, func.avg(Games.User_Score))\
+                     .group_by(Games.Developer)\
+                     .order_by(func.avg(Games.User_Score).desc())\
+                     .limit(100)\
+                     .all()
+    resultsdf = pd.DataFrame(results, columns=["Developer", 'Average User Rating'])
+    fig = px.bar(resultsdf, x="Developer", y="Average User Rating",color = "Developer" )
+    fig.update_yaxes( range=[0,10])
+    ratings5graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    session.close()
+    return render_template("ratings.html", ratings4graphJSON=ratings4graphJSON,ratings5graphJSON=ratings5graphJSON, title = "Ratings")
 
 @app.route("/comparisons")
 def comparisons():
