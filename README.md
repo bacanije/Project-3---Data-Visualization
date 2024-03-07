@@ -12,10 +12,10 @@ The games.csv and vgsales.csv were converted into a SQLite database, ["gamesdb.d
 
 The gamesdb database was queried using SQLalchemy in jupyter notebook or VSCode to create visualizations with [Plotly](https://plotly.com/graphing-libraries/) and [Altair](https://altair-viz.github.io/index.html) libraries.  All figures are displaying in a Flask application.  The [Flask app](Flask) files are all within this Repository's Flask Folder. The app can be run through the [run.py](Flask/run.py) file.  
 
-Part 1: Overview of Data (Mike)  
+Part 1: Overview of Data ([Stephanie](JupyterNotebooks/SL_VideoGameSalesFigures.ipynb))
 - Counts by Publisher
-- Counts by Developers
-- Counts by Genre 
+- Binning by Publisher
+- Binning by User Score
 
 Part 2: Trends ([Jessamyn](JupyterNotebooks/Videogame_analysis_final_jess.ipynb))
 - Average rating (user score and) by publisher over time
