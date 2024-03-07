@@ -34,7 +34,68 @@ def home():
 
 @app.route("/overview")
 def overview():
-    return render_template("overview.html", title="Overview")
+    # Assigning vgsales class to a variable, creating a session
+    Games = Base.classes.games
+    session = Session(engine)
+
+    # Figure 1
+    # Defining values to select
+    sel = [Games.Publisher,
+      func.count(Games.Publisher)]
+
+    publishernum = session.query(*sel).\
+        group_by(Games.Publisher).\
+        order_by(func.count(Games.Publisher).desc()).all()
+
+    pubnumdf = pd.DataFrame(publishernum, columns=["Publisher", "Number of Games"])
+    top10pub = pubnumdf.iloc[:20] 
+    
+    # Plotly express stacked bar graph of total sales, with game on x-axis and units sold on y-axis, shown by region
+    fig1 = px.bar(top10pub, x="Publisher", y="Number of Games", height=900, color="Publisher",
+            labels={"value": "Number of Games", "variable":"Region"})
+    fig1.update_layout(legend_title="")
+    # JSON Encoding figure for display  
+    ov1graphJSON = json.dumps(fig1, cls=plotly.utils.PlotlyJSONEncoder)
+
+    # Chart 2
+    bins = [0,11,21,31,41,51,76,101,126,151,201,251,300, 1000]
+    names = ["0-10", "11-20", "21-30", "31-40","41-50", "51-75", "76-100", "101-125", "126-150", "151-200", "201-250", '251-300', "300+"]
+    pubnumdf["Number of Games Binned"]=pd.cut(pubnumdf["Number of Games"], bins,labels=names, include_lowest=True)
+    pubnumdfgrouped = pubnumdf.groupby(['Number of Games Binned'])
+    binnedpub = pubnumdfgrouped.count()
+    binnedpub1 = binnedpub.reset_index()
+    fig2 = px.bar(binnedpub1, x="Number of Games Binned", y=["Number of Games"], height=900, color="Publisher")
+    fig2.update_layout(legend_title="")
+    fig2.update_layout(yaxis_range=[0,100])
+    # JSON Encoding figure for display  
+    ov2graphJSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
+
+    # Chart 3
+    sel = [Games.Title, Games.User_Score]
+    userscores = session.query(*sel).all()
+    scores = pd.DataFrame(userscores, columns=["Title", "User Score"])
+    scores = scores.dropna(subset=["User Score"])
+    bins = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11]
+    names = ["0-0.9", "1-1.9", "2-2.9", "3-3.9","4-4.9", "5-5.9", "6-6.9", "7-7.9", "8-8.9", "9-10"]
+    scores["Number of Games Binned"]=pd.cut(scores["User Score"], bins,labels=names, include_lowest=True)
+    scoresgrouped = scores.groupby(['Number of Games Binned'])
+    binnedscore = scoresgrouped.count()
+    binnedscore1 = binnedscore.reset_index()
+    fig3 = px.bar(binnedscore1, x="Number of Games Binned", y=["Title"], height=1000, color="User Score")
+    fig3.update_layout(legend_title="")
+    # JSON Encoding figure for display  
+    ov3graphJSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
+
+
+
+
+
+
+
+
+
+
+    return render_template("overview.html", ov1graphJSON=ov1graphJSON,ov2graphJSON=ov2graphJSON,ov3graphJSON=ov3graphJSON, title="Overview")
 
 @app.route("/trends")
 def trends():
@@ -135,22 +196,182 @@ def ratings():
 @app.route("/comparisons")
 def comparisons():
 
+# Assigning games class to a variable, creating a session
+    Games = Base.classes.games
     session = Session(engine)
+
+
+    # Figure 1
+    # Defining values to select
     sel = [Games.Genres,
       func.sum(Games.Publisher)]
 
+    # group by Genres and order of overall genres published
     genres_published = session.query(*sel).\
         group_by(Games.Genres).\
         order_by(func.sum(Games.Publisher).desc()).limit(10).all()
-    top10_genres_published_df = pd.DataFrame(genres_published, columns=["Genres","Published"])
+    
+    # Setting DataFrame limit to 10 rows
+    top_genres_published_df = pd.DataFrame(genres_published, columns=["Genres","Published"])
+    top_genres_published_df.head(10)
+    
+    # Plotly express stacked bar graph of top 10 Genres Published
+    top10_genres_published_df = top_genres_published_df.head(10)
     figc1 = px.bar(top10_genres_published_df, x="Genres", y= "Published", color="Genres")
-            
     figc1.update_layout(title="Top 10 Genres Published")
+    
+    # JSON Encoding figure for display 
     comparison1graphJSON = json.dumps(figc1, cls=plotly.utils.PlotlyJSONEncoder)
+
+
+# Figure 2
+    # Defining values to select
+    sel = [Games.Title,
+      func.sum(Games.User_Score)]
+
+    # Group by Title and order by user score
+    score_title_by_userscore = session.query(*sel).\
+        group_by(Games.Title).\
+        order_by(func.sum(Games.User_Score).desc()).limit(20).all()
+    
+    # Setting DataFrame limit to 10 rows
+    score_title_by_userscore_df = pd.DataFrame(score_title_by_userscore, columns=["Titles", "User_Score"])
+    score_title_by_userscore_df.head(10)
+    
+    # Plotly express stacked bar graph of top 10 title by user score
+    top10_title_by_userscore_df = score_title_by_userscore_df.head(10)
+    figc2 = px.bar(score_title_by_userscore_df.head(10), x="Titles", y= "User_Score", color="User_Score") 
+    figc2.update_layout(title="Top 10 Game Titles by User Score")
+    
+    # JSON Encoding figure for display 
+    comparison2graphJSON = json.dumps(figc2, cls=plotly.utils.PlotlyJSONEncoder)
+
+
+# Figure 3
+    # Defining values to select
+    sel = [Games.Title,
+      func.sum(Games.Mean_Metascore_Across_Platforms)]
+
+    # Group by Title and order by Mean Meta score
+    score_title_by_Mean_Metascore = session.query(*sel).\
+        group_by(Games.Title).\
+        order_by(func.sum(Games.Mean_Metascore_Across_Platforms).desc()).limit(20).all()
+    
+    # Setting DataFrame limit to 10 rows
+    score_title_by_Mean_Metascore_df = pd.DataFrame(score_title_by_Mean_Metascore, columns=["Titles", "Mean_Metascore_Across_Platforms"])
+    score_title_by_Mean_Metascore_df.head(10)
+    
+    # Plotly express stacked bar graph of top 10 title by mean meta score
+    top10_title_by_Mean_Metascore_df = score_title_by_Mean_Metascore_df.head(10)
+    figc3 = px.bar(top10_title_by_Mean_Metascore_df, x="Titles", y= "Mean_Metascore_Across_Platforms", color="Titles") 
+    figc3.update_layout(title="Top 10 Game Title by Mean Meta Score")
+    
+    # JSON Encoding figure for display 
+    comparison3graphJSON = json.dumps(figc3, cls=plotly.utils.PlotlyJSONEncoder)
+
+
+# Figure 4
+    # Defining values to select
+    sel = [Games.Title,
+        func.sum(Games.User_Score),
+        func.sum(Games.Mean_Metascore_Across_Platforms)]
+
+    # Group by Title and order by User & Mean Meta score
+    score_by_title = session.query(*sel).\
+        group_by(Games.Title).\
+        order_by(func.sum(Games.Mean_Metascore_Across_Platforms).desc()).limit(10).all()
+    
+    # Setting DataFrame limit to 10 rows
+    score_by_title_df = pd.DataFrame(score_by_title, columns=["Title", "User_Score", "Mean_Metascore_Across_Platforms"])
+    score_by_title_df.head(10)
+    
+    # Plotly express stacked bar graph of Title comparions by User & Mean Metascore
+    score_by_title_df = score_by_title_df.head(10)
+    figc4 = px.line(score_by_title_df, x="Title", y= ["User_Score", "Mean_Metascore_Across_Platforms"])
+    
+    # JSON Encoding figure for display 
+    comparison4graphJSON = json.dumps(figc4, cls=plotly.utils.PlotlyJSONEncoder)
+
+
+# Figure 5
+    # Defining values to select
+    sel = [Games.Platform,
+       func.sum(Games.User_Score)]
+
+    # Group by Platform and order by user score
+    score_by_User = session.query(*sel).\
+        group_by(Games.Platform).\
+        order_by(func.sum(Games.User_Score).desc()).limit(10).all()
+    
+    # Setting DataFrame limit to 10 rows
+    score_by_User_df= pd.DataFrame(score_by_User, columns=["Platform", "User_Score"])
+    score_by_User_df.head(10)
+    
+    # Plotly express stacked bar graph of top 10 Platform User scores
+    top10_score_by_User_df = score_by_User_df.head(10)
+    figc5 = px.bar(top10_score_by_User_df, x="Platform", y= "User_Score", color="Platform") 
+    figc5.update_layout(title="Top 10 Game Platforms by User Score")
+    
+    # JSON Encoding figure for display 
+    comparison5graphJSON = json.dumps(figc5, cls=plotly.utils.PlotlyJSONEncoder)
+
+
+# Figure 6
+    # Defining values to select
+    sel = [Games.Platform,
+        func.sum(Games.Mean_Metascore_Across_Platforms)]
+
+    # Group by Platform and order by mean meta score
+    score_by_Meta = session.query(*sel).\
+        group_by(Games.Platform).\
+        order_by(func.sum(Games.Mean_Metascore_Across_Platforms).desc()).limit(10).all()
+    
+    # Setting DataFrame limit to 10 rows
+    score_by_MetaScore_df = pd.DataFrame(score_by_Meta, columns=["Platform", "Mean_Metascore_Across_Platforms"])
+    score_by_MetaScore_df.head(10)
+    
+    # Plotly express stacked bar graph of top 10 Platform Mean Meta scores
+    top10_score_by_MetaScore_df = score_by_MetaScore_df.head(10)
+    figc6 = px.bar(top10_score_by_MetaScore_df, x="Platform", y= "Mean_Metascore_Across_Platforms", color="Mean_Metascore_Across_Platforms") 
+    figc6.update_layout(title="Top 10 Game Platforms by Meta Score")
+    
+    # JSON Encoding figure for display 
+    comparison6graphJSON = json.dumps(figc6, cls=plotly.utils.PlotlyJSONEncoder)
+
+
+# Figure 7
+    # Defining values to select
+    sel = [Games.Platform,
+        func.sum(Games.User_Score),
+        func.sum(Games.Mean_Metascore_Across_Platforms)]
+
+    # Group by Platform and order by User & Mean Meta score
+    score_by_platform = session.query(*sel).\
+        group_by(Games.Platform).\
+        order_by(func.sum(Games.Mean_Metascore_Across_Platforms).desc()).limit(10).all()
+    
+    # Setting DataFrame limit to 10 rows
+    score_by_platform_df = pd.DataFrame(score_by_platform, columns=["Platform", "User_Score", "Mean_Metascore_Across_Platforms"])
+    score_by_platform_df.head(10)
+    
+    # Plotly express stacked bar graph of Platform comparions by User & Mean Metascore
+    top10_platform_df = score_by_platform_df.head(10)
+    figc7 = px.line(top10_platform_df, x="Platform", y= ["User_Score", "Mean_Metascore_Across_Platforms"])
+    
+    # JSON Encoding figure for display 
+    comparison7graphJSON = json.dumps(figc7, cls=plotly.utils.PlotlyJSONEncoder)
 
     session.close()
 
-    return render_template("comparisons.html", title = "Comparisons", comparison1graphJSON=comparison1graphJSON)
+    return render_template("comparisons.html", title = "Comparisons", comparison1graphJSON=comparison1graphJSON, comparison2graphJSON=comparison2graphJSON, 
+                                                                        comparison3graphJSON=comparison3graphJSON, comparison4graphJSON=comparison4graphJSON, 
+                                                                        comparison5graphJSON=comparison5graphJSON, comparison6graphJSON=comparison6graphJSON, comparison7graphJSON=comparison7graphJSON)
+
+
+
+
+
+
 
 @app.route("/sales")
 def sales():
