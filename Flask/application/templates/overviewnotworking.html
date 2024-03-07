@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+  <!-- Title at top of page -->
+  <div class="d-flex justify-content-center" style="margin-top: 50px" style="margin-bottom: 50px;"> 
+    <h1>
+      Overview
+    </h1>
+  </div>
+
+  <div class="row p-4">
+    <div class="card m-auto" style="width:90%;">
+        <div class="card-body">
+            <h4 class="card-title">Counts of Games by Publisher</h4>
+            <!-- <img src="{{url_for('static', filename='overview1.png')}}" align="middle" /> -->
+            <div id="ovchart1" class="chart"></div>
+            <p>
+            </p>
+        </div>
+    </div>
+  </div>
+
+  <div class="row p-4">
+    <div class="card m-auto" style="width:90%;">
+        <div class="card-body">
+            <h4 class="card-title">Number of Games by Publisher Binned</h4>
+            <img src="{{url_for('static', filename='overview2.png')}}" align="middle" />
+            <div id="chart2" class="chart"></div>
+            <p>
+            </p>
+        </div>
+    </div>
+  </div>
+
+
+    <!-- plotly CDN -->
+    <script src="https://cdn.plot.ly/plotly-2.29.1.min.js" charset="utf-8"></script>
+    <script type="text/javascript">
+        var graph1 = {{sales1graphJSON|safe}};
+        Plotly.plot('ovchart1', graph1,{});
+    </script>
+
+
+{% endblock %}
